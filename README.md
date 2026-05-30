@@ -44,6 +44,48 @@ Solo firmware thread: https://discord.com/channels/1495203904898728149/150529433
 
 - [Tools Screen](./docs/solo_features/tools_screen/tools_screen.md) — GPS trail & waypoints, compass, nearby nodes (with ping & navigate), ringtone editor, auto-reply bot, auto-advert
 
+---
+
+## Menu Structure
+
+```mermaid
+flowchart TD
+    Home[("Home Screen")]
+    
+    Home --> Clock[Clock]
+    Home --> Favourites[Favourites]
+    Home --> Recent[Recent]
+    Home --> Radio[Radio]
+    Home --> Bluetooth[Bluetooth]
+    Home --> Advert[Advert]
+    Home --> GPS[GPS]
+    Home --> Sensors[Sensors]
+    Home --> Settings[Settings]
+    Home --> Tools[Tools]
+    Home --> Messages[Messages]
+    Home --> Shutdown[Shutdown]
+    
+    Tools --> RingtoneEditor[Ringtone Editor]
+    Tools --> Bot[Auto-Reply Bot]
+    Tools --> Nearby[Nearby Nodes]
+    Tools --> AutoAdvert[Auto-Advert]
+    Tools --> Trail[GPS Trail]
+    
+    Settings --> Display[Display]
+    Settings --> Sound[Sound]
+    Settings --> HomePages[Home Pages]
+    Settings --> Radio[Radio]
+    Settings --> System[System]
+    Settings --> Contacts[Contacts]
+    Settings --> MsgSlots[Message Slots]
+    
+    Messages --> Direct[Direct]
+    Messages --> Channels[Channels]
+    Messages --> Rooms[Room Servers]
+    
+    Clock --> DashConfig[Dashboard Config]
+```
+
 ### E-ink Display
 
 The e-ink variant targets the Wio Tracker L1 fitted with a 2.13″ GxEPD2 panel (250 × 122 px). All screens have been adapted for the e-ink panel:

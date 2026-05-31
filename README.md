@@ -31,6 +31,110 @@ Join the discussion on the official MeshCore Discord: https://discord.gg/sdhYArU
 
 - [Tools Screen](./docs/solo_features/tools_screen/tools_screen.md) — GPS trail recording and export, nearby nodes, ringtone editor, auto-reply bot, auto-advert
 
+---
+
+## Menu Structure
+
+```mermaid
+%%{init: {'theme': 'base', 'flowchart': {'curve': 'stepAfter', 'nodeSpacing': 20, 'rankSpacing': 40}, 'fontSize': 11}}%%
+flowchart LR
+    Home["Home Screen"]
+    
+    Clock["Clock<br/>(long-press opens Dashboard Config)"]
+    Favourites["Favourites<br/>(6 pinned contacts)"]
+    Recent["Recent Adverts"]
+    Radio["Radio Stats"]
+    Bluetooth[Bluetooth]
+    Advert[Advert]
+    GPS[GPS]
+    Sensors[Sensors]
+    Settings[Settings]
+    Tools[Tools]
+    Messages[Messages]
+    Shutdown[Shutdown]
+    
+    RingtoneEditor[Ringtone Editor]
+    Bot[Auto-Reply Bot]
+    Nearby[Nearby Nodes]
+    AutoAdvert[Auto-Advert]
+    Trail[GPS Trail]
+    
+    TrailSummary[Summary]
+    TrailMap[Map]
+    TrailList[List]
+    TrailLoad[Load]
+    TrailSave[Save]
+    TrailExport[Export]
+    
+    DiscoverScan[Discover]
+    PingNode[Ping]
+    
+    Display["Display: Brightness, Auto-Off, Auto-Lock, Batt Display, Clock Sec, Font, Rotation, Joy Rotation"]
+    Sound["Sound: Buzzer, Volume, DM Melody, CH Melody"]
+    HomePages["Home Page Visibility"]
+    Radio2["Radio: TX Power"]
+    System["System: Timezone, Low Battery"]
+    Contacts["Contacts: DM/CH/Room Filter"]
+    MsgSlots[Message Slots 0-9]
+    
+    Direct[Direct Messages]
+    Channels[Channels]
+    Rooms[Room Servers]
+    Reply[Reply]
+    DirectSend[Send]
+    ChannelSend[Send]
+    RoomSend[Send]
+    DashConfig["Dashboard Config<br/>(3 field slots)"]
+    
+    Home --> Clock
+    Home --> Favourites
+    Home --> Recent
+    Home --> Radio
+    Home --> Bluetooth
+    Home --> Advert
+    Home --> GPS
+    Home --> Sensors
+    Home --> Settings
+    Home --> Tools
+    Home --> Messages
+    Home --> Shutdown
+    
+    Tools --> RingtoneEditor
+    Tools --> Bot
+    Tools --> Nearby
+    Tools --> AutoAdvert
+    Tools --> Trail
+    
+    Trail --> TrailSummary
+    Trail --> TrailMap
+    Trail --> TrailList
+    Trail --> TrailLoad
+    Trail --> TrailSave
+    Trail --> TrailExport
+    
+    Nearby --> DiscoverScan
+    Nearby --> PingNode
+    
+    Settings --> Display
+    Settings --> Sound
+    Settings --> HomePages
+    Settings --> Radio2
+    Settings --> System
+    Settings --> Contacts
+    Settings --> MsgSlots
+    
+    Messages --> Direct
+    Messages --> Channels
+    Messages --> Rooms
+    Messages --> Reply
+    
+    Direct --> DirectSend
+    Channels --> ChannelSend
+    Rooms --> RoomSend
+    
+    Clock --> DashConfig
+```
+
 ### E-ink Display
 
 The e-ink variant targets the Wio Tracker L1 fitted with a 2.13″ GxEPD2 panel (250 × 122 px). All screens have been adapted for the e-ink panel:

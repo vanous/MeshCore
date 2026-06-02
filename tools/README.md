@@ -24,7 +24,6 @@ PLATFORMIO_BUILD_FLAGS="-D ENABLE_SCREENSHOT" pio run -e WioTrackerL1_companion_
 3. Install dependencies and run the screenshot tool. To manage python and python dependencies, use uv: https://docs.astral.sh/uv/
 
    ```sh
-   cd tools
    uv run tools/screenshot.py
    ```
 

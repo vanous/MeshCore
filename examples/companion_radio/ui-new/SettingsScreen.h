@@ -438,21 +438,21 @@ class SettingsScreen : public UIScreen {
     } else if (item == DM_MELODY) {
       display.print("DM sound");
       display.setCursor(display.valCol(), y);
-      { static const char* L[] = { "built-in", "M1", "M2" };
+      { static const char* L[] = { "built-in", "M1", "M2", "None" };
         uint8_t v = p ? p->notif_melody_dm : 0;
-        display.print(L[v < 3 ? v : 0]); }
+        display.print(L[v < 4 ? v : 0]); }
     } else if (item == CH_MELODY) {
       display.print("Ch sound");
       display.setCursor(display.valCol(), y);
-      { static const char* L[] = { "built-in", "M1", "M2" };
+      { static const char* L[] = { "built-in", "M1", "M2", "None" };
         uint8_t v = p ? p->notif_melody_ch : 0;
-        display.print(L[v < 3 ? v : 0]); }
+        display.print(L[v < 4 ? v : 0]); }
     } else if (item == AD_SOUND) {
       display.print("AD sound");
       display.setCursor(display.valCol(), y);
-      { static const char* L[] = { "built-in", "M1", "M2" };
+      { static const char* L[] = { "built-in", "M1", "M2", "None" };
         uint8_t v = p ? p->notif_melody_ad : 0;
-        display.print(L[v < 3 ? v : 0]); }
+        display.print(L[v < 4 ? v : 0]); }
     } else if (isHomePage(item)) {
       if (p) ensurePageOrderInit(p);
       int pos = homePagePosition(item, p);
@@ -696,15 +696,15 @@ public:
       return right || left;
     }
     if (_selected == DM_MELODY && p && (left || right || enter)) {
-      p->notif_melody_dm = (p->notif_melody_dm + (left ? 2 : 1)) % 3;
+      p->notif_melody_dm = (p->notif_melody_dm + (left ? 3 : 1)) % 4;
       _dirty = true; return true;
     }
     if (_selected == CH_MELODY && p && (left || right || enter)) {
-      p->notif_melody_ch = (p->notif_melody_ch + (left ? 2 : 1)) % 3;
+      p->notif_melody_ch = (p->notif_melody_ch + (left ? 3 : 1)) % 4;
       _dirty = true; return true;
     }
     if (_selected == AD_SOUND && p && (left || right || enter)) {
-      p->notif_melody_ad = (p->notif_melody_ad + (left ? 2 : 1)) % 3;
+      p->notif_melody_ad = (p->notif_melody_ad + (left ? 3 : 1)) % 4;
       _dirty = true; return true;
     }
     if (isHomePage(_selected) && p) {

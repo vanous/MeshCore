@@ -288,6 +288,7 @@ void DataStore::loadPrefsInt(const char *filename, NodePrefs& _prefs, double& no
   rd(&_prefs.notif_melody_ch,           sizeof(_prefs.notif_melody_ch));
   rd(&_prefs.ch_notif_melody_set,       sizeof(_prefs.ch_notif_melody_set));
   rd(&_prefs.ch_notif_melody_2,         sizeof(_prefs.ch_notif_melody_2));
+  rd(&_prefs.ch_notif_melody_none,     sizeof(_prefs.ch_notif_melody_none));
   rd(_prefs.dm_melody,                  sizeof(_prefs.dm_melody));
   rd(&_prefs.auto_lock,                 sizeof(_prefs.auto_lock));
   rd(&_prefs.clock_12h,                 sizeof(_prefs.clock_12h));
@@ -322,7 +323,9 @@ void DataStore::loadPrefsInt(const char *filename, NodePrefs& _prefs, double& no
   rd(&_prefs.trail_show_pace,     sizeof(_prefs.trail_show_pace));
   // These three were appended together; an older file leaves stray bytes here
   // (the old tail sentinel gets partly consumed), so clamp out-of-range values.
-  if (_prefs.notif_melody_ad > 2) _prefs.notif_melody_ad = 0;
+  if (_prefs.notif_melody_dm > 3) _prefs.notif_melody_dm = 0;
+  if (_prefs.notif_melody_ch > 3) _prefs.notif_melody_ch = 0;
+  if (_prefs.notif_melody_ad > 3) _prefs.notif_melody_ad = 0;
   if (_prefs.units_imperial  > 1) _prefs.units_imperial  = 0;
   if (_prefs.trail_show_pace > 1) _prefs.trail_show_pace = 0;
 
@@ -353,6 +356,7 @@ void DataStore::loadPrefsInt(const char *filename, NodePrefs& _prefs, double& no
     // ch_fav_only. Any older file (incl. either single-feature 0006) leaves
     // stray/old bytes in these fields; they're clamped above, so upgraders fall
     // back to built-in advert sound + metric + speed.
+    // → 0xC0DE0008: added ch_notif_melody_none bitmask for per-channel None (no sound) option.
   }
 
   file.close();
@@ -426,6 +430,7 @@ void DataStore::savePrefs(const NodePrefs& _prefs, double node_lat, double node_
     file.write((uint8_t *)&_prefs.notif_melody_ch, sizeof(_prefs.notif_melody_ch));
     file.write((uint8_t *)&_prefs.ch_notif_melody_set, sizeof(_prefs.ch_notif_melody_set));
     file.write((uint8_t *)&_prefs.ch_notif_melody_2, sizeof(_prefs.ch_notif_melody_2));
+    file.write((uint8_t *)&_prefs.ch_notif_melody_none, sizeof(_prefs.ch_notif_melody_none));
     file.write((uint8_t *)_prefs.dm_melody, sizeof(_prefs.dm_melody));
     file.write((uint8_t *)&_prefs.auto_lock, sizeof(_prefs.auto_lock));
     file.write((uint8_t *)&_prefs.clock_12h, sizeof(_prefs.clock_12h));

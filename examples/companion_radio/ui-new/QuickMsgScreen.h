@@ -442,6 +442,7 @@ class QuickMsgScreen : public UIScreen {
     NodePrefs* p = _task->getNodePrefs();
     if (!p) return 0;
     uint64_t mask = 1ULL << ch_idx;
+    if (p->ch_notif_melody_none & mask) return 3;
     if (!(p->ch_notif_melody_set & mask)) return 0;
     return (p->ch_notif_melody_2 & mask) ? 2 : 1;
   }
@@ -450,15 +451,16 @@ class QuickMsgScreen : public UIScreen {
     NodePrefs* p = _task->getNodePrefs();
     if (!p) return;
     uint64_t mask = 1ULL << ch_idx;
-    if (slot == 0) {
-      p->ch_notif_melody_set &= ~mask;
-      p->ch_notif_melody_2   &= ~mask;
-    } else if (slot == 1) {
+    p->ch_notif_melody_none &= ~mask;
+    p->ch_notif_melody_set  &= ~mask;
+    p->ch_notif_melody_2    &= ~mask;
+    if (slot == 1) {
       p->ch_notif_melody_set |= mask;
-      p->ch_notif_melody_2   &= ~mask;
-    } else {
+    } else if (slot == 2) {
       p->ch_notif_melody_set |= mask;
       p->ch_notif_melody_2   |= mask;
+    } else if (slot == 3) {
+      p->ch_notif_melody_none |= mask;
     }
   }
 
@@ -1154,7 +1156,7 @@ public:
           bool right = (c == KEY_RIGHT || c == KEY_NEXT);
           if (left || right) {
             static const char* NOTIF_LABELS[] = { "default", "OFF", "ON" };
-            static const char* ML[]           = { "global", "M1", "M2" };
+            static const char* ML[]           = { "global", "M1", "M2", "None" };
             ContactInfo ci;
             if (the_mesh.getContactByIdx(_sorted[_contact_sel], ci)) {
               int sel = _ctx_menu.selectedIndex();
@@ -1166,7 +1168,7 @@ public:
                 _ctx_dirty = true;
               } else if (sel == 2) {
                 uint8_t v = dmMelodySlot(ci.id.pub_key);
-                v = right ? (v + 1) % 3 : (v + 2) % 3;
+                v = right ? (v + 1) % 4 : (v + 3) % 4;
                 setDmMelody(ci.id.pub_key, v);
                 snprintf(_ctx_melody_item, sizeof(_ctx_melody_item), "Melody: %s", ML[v]);
                 _ctx_dirty = true;
@@ -1269,7 +1271,7 @@ public:
         the_mesh.getContactByIdx(_sorted[_contact_sel], ci);
         snprintf(_ctx_notif_item, sizeof(_ctx_notif_item), "Notif: %s",
                  NOTIF_LABELS[dmNotifState(ci.id.pub_key)]);
-        { static const char* ML[] = { "global", "M1", "M2" };
+        { static const char* ML[] = { "global", "M1", "M2", "None" };
           snprintf(_ctx_melody_item, sizeof(_ctx_melody_item), "Melody: %s",
                    ML[dmMelodySlot(ci.id.pub_key)]); }
         int pinned_slot = _task->findFavouriteSlot(ci.id.pub_key);
@@ -1293,7 +1295,7 @@ public:
           bool right = (c == KEY_RIGHT || c == KEY_NEXT);
           if (left || right) {
             static const char* NOTIF_LABELS[] = { "default", "OFF", "ON" };
-            static const char* ML[]           = { "global", "M1", "M2" };
+            static const char* ML[]           = { "global", "M1", "M2", "None" };
             uint8_t ch_idx = _channel_indices[_channel_sel];
             int sel = _ctx_menu.selectedIndex();
             if (sel == 1) {
@@ -1304,7 +1306,7 @@ public:
               _ctx_dirty = true;
             } else if (sel == 2) {
               uint8_t v = chNotifMelody(ch_idx);
-              v = right ? (v + 1) % 3 : (v + 2) % 3;
+              v = right ? (v + 1) % 4 : (v + 3) % 4;
               setChNotifMelody(ch_idx, v);
               snprintf(_ctx_melody_item, sizeof(_ctx_melody_item), "Melody: %s", ML[v]);
               _ctx_dirty = true;
@@ -1364,7 +1366,7 @@ public:
         static const char* NOTIF_LABELS[] = { "default", "OFF", "ON" };
         snprintf(_ctx_notif_item, sizeof(_ctx_notif_item), "Notif: %s",
                  NOTIF_LABELS[chNotifState(ch_idx)]);
-        { static const char* ML[] = { "global", "M1", "M2" };
+        { static const char* ML[] = { "global", "M1", "M2", "None" };
           snprintf(_ctx_melody_item, sizeof(_ctx_melody_item), "Melody: %s",
                    ML[chNotifMelody(ch_idx)]); }
         { NodePrefs* p2 = _task->getNodePrefs();

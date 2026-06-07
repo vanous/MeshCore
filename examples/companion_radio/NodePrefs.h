@@ -69,15 +69,16 @@ struct NodePrefs {  // persisted to file
   uint8_t  ringtone2_bpm_idx;
   uint8_t  ringtone2_len;
   uint8_t  ringtone2_notes[32];
-  // Global melodies for notifications: 0=built-in, 1=melody1, 2=melody2
+  // Global melodies for notifications: 0=built-in, 1=melody1, 2=melody2, 3=none
   uint8_t  notif_melody_dm;
   uint8_t  notif_melody_ch;
   uint8_t  notif_melody_ad;
-  // Per-channel melody override (2 bitmasks, 1 bit per channel)
+  // Per-channel melody override (3 bitmasks, 1 bit per channel)
   uint64_t ch_notif_melody_set;  // bit i = channel i has explicit melody
   uint64_t ch_notif_melody_2;    // bit i = use melody 2 (else melody 1, when set bit is set)
+  uint64_t ch_notif_melody_none; // bit i = use none (no sound, when set bit is set)
   // Per-DM melody table
-  struct DmMelodyEntry { uint8_t prefix[4]; uint8_t slot; }; // slot: 0=global,1=melody1,2=melody2
+  struct DmMelodyEntry { uint8_t prefix[4]; uint8_t slot; }; // slot: 0=global,1=melody1,2=melody2,3=none
   static const int DM_MELODY_TABLE_MAX = 16;
   DmMelodyEntry dm_melody[DM_MELODY_TABLE_MAX];
   uint8_t  use_lemon_font;      // 0=default Adafruit font, 1=Lemon font (Unicode, pixel-accurate wrap)
@@ -120,7 +121,7 @@ struct NodePrefs {  // persisted to file
   // adding/removing/reordering fields in DataStore::savePrefs/loadPrefsInt so
   // older saves are detected on load and skipped (zero-init defaults kept).
   // High 24 bits identify the file format; low byte is the schema revision.
-  static const uint32_t SCHEMA_SENTINEL = 0xC0DE0007;
+  static const uint32_t SCHEMA_SENTINEL = 0xC0DE0008;
 
   // Bit-index for each home page. Used by page_order (entries store bit+1) and
   // by home_pages_mask. Single source of truth — both HomeScreen::pageBit/bitToPage

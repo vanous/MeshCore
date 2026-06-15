@@ -1461,12 +1461,15 @@ void UITask::newMsg(uint8_t path_len, const char* from_name, const char* text, i
     }
   }
 
-  char alert_buf[80];
-  snprintf(alert_buf, sizeof(alert_buf), "Msg: %.20s", from_name);
-  showAlert(alert_buf, 3000);
+  bool show_popup = !_node_prefs || _node_prefs->incoming_msg_popup;
+  if (show_popup) {
+    char alert_buf[80];
+    snprintf(alert_buf, sizeof(alert_buf), "Msg: %.20s", from_name);
+    showAlert(alert_buf, 3000);
+  }
 
   if (_display != NULL && !_locked) {
-    if (!_display->isOn() && !isClientConnected()) {   // wake for the msg unless an app (BLE/USB) is already showing it
+    if (show_popup && !_display->isOn() && !isClientConnected()) {   // wake for the msg unless an app (BLE/USB) is already showing it
       _display->turnOn();
     }
     if (_display->isOn()) {

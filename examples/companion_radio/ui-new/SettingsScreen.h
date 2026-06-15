@@ -32,6 +32,7 @@ class SettingsScreen : public UIScreen {
 #if FEAT_FULL_REFRESH_SETTING
     EINK_FULL_REFRESH,
 #endif
+    MSG_POPUP,
     // Sound section
     SECTION_SOUND,
     BUZZER,
@@ -559,6 +560,10 @@ class SettingsScreen : public UIScreen {
         if (idx >= EINK_FULL_REFRESH_COUNT) idx = 0;
         display.print(EINK_FULL_REFRESH_LABELS[idx]); }
 #endif
+    } else if (item == MSG_POPUP) {
+      display.print("Msg popup");
+      display.setCursor(display.valCol(), y);
+      display.print((p && p->incoming_msg_popup) ? "ON" : "OFF");
     } else if (item == DM_FILTER) {
       display.print("DM");
       display.setCursor(display.valCol(), y);
@@ -840,6 +845,11 @@ public:
       return true;
     }
 #endif
+    if (_selected == MSG_POPUP && p && (left || right || enter)) {
+      p->incoming_msg_popup ^= 1;
+      _dirty = true;
+      return true;
+    }
     if (_selected == DM_FILTER && p && (left || right || enter)) {
       p->dm_show_all = p->dm_show_all ? 0 : 1;
       _dirty = true;

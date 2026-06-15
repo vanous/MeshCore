@@ -1264,6 +1264,7 @@ MyMesh::MyMesh(mesh::Radio &radio, mesh::RNG &rng, mesh::RTCClock &rtc, SimpleMe
   _prefs.bot_reply_ch[0] = '\0';
   _prefs.dm_show_all = 1;        // show all contacts by default
   _prefs.dm_resend_count = 2;    // auto-resend on-device DMs twice by default
+  _prefs.incoming_msg_popup = 1; // show incoming-message popup by default
   memset(_prefs.dm_notif, 0, sizeof(_prefs.dm_notif));
   _prefs.auto_off_secs = 15;    // 15 seconds auto-off by default
   _prefs.clock_hide_seconds = Features::CLOCK_HIDE_SECONDS_DEFAULT ? 1 : 0;

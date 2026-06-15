@@ -209,6 +209,7 @@ void DataStore::loadPrefsInt(const char *filename, NodePrefs& _prefs, double& no
 #ifdef DISPLAY_ROTATION
   _prefs.display_rotation = DISPLAY_ROTATION;
 #endif
+  _prefs.incoming_msg_popup = 1;
   File file = openRead(_fs, filename);
   if (!file) return;
 
@@ -325,6 +326,7 @@ void DataStore::loadPrefsInt(const char *filename, NodePrefs& _prefs, double& no
   rd(&_prefs.rx_powersave,        sizeof(_prefs.rx_powersave));
   rd(&_prefs.tx_apc,              sizeof(_prefs.tx_apc));
   rd(&_prefs.dm_resend_count,     sizeof(_prefs.dm_resend_count));
+  rd(&_prefs.incoming_msg_popup,  sizeof(_prefs.incoming_msg_popup));
   // These fields were appended over successive schema bumps; an older file
   // can leave stray bytes here, so clamp out-of-range values back to defaults.
   // Values for notif_melody_ad: 0=built-in, 1=melody1, 2=melody2, 3=none.
@@ -337,6 +339,7 @@ void DataStore::loadPrefsInt(const char *filename, NodePrefs& _prefs, double& no
   // An old (0xC0DE0009) file leaves the low byte of its sentinel here (0x09),
   // which is out of range — fall back to the default of 2 resends.
   if (_prefs.dm_resend_count > 5) _prefs.dm_resend_count = 2;
+  if (_prefs.incoming_msg_popup > 1) _prefs.incoming_msg_popup = 1;
 
   // Schema sentinel: bumped on layout changes. Mismatch means an older file
   // (or a different schema); rd() already zero-inits any fields not present,
@@ -461,6 +464,7 @@ void DataStore::savePrefs(const NodePrefs& _prefs, double node_lat, double node_
     file.write((uint8_t *)&_prefs.rx_powersave,        sizeof(_prefs.rx_powersave));
     file.write((uint8_t *)&_prefs.tx_apc,              sizeof(_prefs.tx_apc));
     file.write((uint8_t *)&_prefs.dm_resend_count,     sizeof(_prefs.dm_resend_count));
+    file.write((uint8_t *)&_prefs.incoming_msg_popup,  sizeof(_prefs.incoming_msg_popup));
 
     // Tail sentinel — must be last. See NodePrefs::SCHEMA_SENTINEL.
     uint32_t sentinel = NodePrefs::SCHEMA_SENTINEL;
